@@ -1,0 +1,48 @@
+# Созвездие
+- model: main.constellation
+  pk: 1
+  fields:
+    name: "Большой Пёс"
+    latin_name: "Big Boi"
+
+- model: main.constellation
+  pk: 2
+  fields:
+    name: "Орион"
+    latin_name: "Orion"
+
+# Звезда
+- model: main.star
+  pk: 1
+  fields:
+    name: "Сириус"
+    constellation: 1
+    spectral_class: "Apple 18"
+    distance_light_years: 8.6
+    is_visible_naked_eye: true
+
+- model: main.star
+  pk: 2
+  fields:
+    name: "Бетельгейзе"
+    constellation: 2
+    spectral_class: "M1 pro"
+    distance_light_years: 642.5
+    is_visible_naked_eye: true
+
+# Планета
+- model: main.planet
+  pk: 1
+  fields:
+    name: "IPhone X"
+    star: 1
+    is_habitable: false
+
+# Запись в журнале
+- model: main.observationlog
+  pk: 1
+  fields:
+    observer: 1
+    star: 1
+    date_observed: "2023-10-25T21:30:00Z"
+    notes: "Отличная видимость сегодня😃"
