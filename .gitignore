@@ -126,3 +126,4 @@ help.sh
 /graphify-out
 .cursor
 *.iml
+staticfiles/

@@ -12,6 +12,10 @@ DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
+ODATA_BASE_URL = os.getenv("ODATA_BASE_URL", "http://url")
+ODATA_USER = os.getenv("ODATA_USER", "user")
+ODATA_PASSWORD = os.getenv("ODATA_PASSWORD", "password")
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -21,6 +25,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "drf_spectacular",
+    'warehouse_sales',
     "main",
     "users",
 ]
@@ -95,6 +100,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MAILERS = {
     "default": {

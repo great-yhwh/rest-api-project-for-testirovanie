@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление складом и продажами</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8fafc; color: #1e293b; }
+        .navbar-dark { background-color: #0f172a !important; } /* Глубокий тёмно-синий/черный */
+        .card { border-radius: 10px; }
+        .btn { border-radius: 6px; font-weight: 500; }
+        .table thead th { background-color: #0f172a; border-bottom: none; }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark mb-4 shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold me-4" href="{% url 'warehouse_sales:contractor_list' %}">
+            Склад и Продажи
+        </a>
+        <div class="navbar-nav">
+            <a class="nav-link px-3" href="{% url 'warehouse_sales:contractor_list' %}">Контрагенты</a>
+            <a class="nav-link px-3" href="{% url 'warehouse_sales:stock_list' %}">Остатки на складах</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
