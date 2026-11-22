@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container my-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="bi bi-speedometer2 me-2"></i>Мониторинг</h2>
+            <a href="{% url 'monitoring:dashboard' %}" class="btn btn-outline-dark btn-sm">
+                <i class="bi bi-arrow-clockwise me-1"></i>Обновить
+            </a>
+        </div>
+
+        {% if alert_triggered %}
+            <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+                <i class="bi bi-exclamation-octagon-fill fs-4 me-3"></i>
+                <div>
+                    <strong>Внимание! Превышен порог ошибок обмена!</strong><br>
+                    Зафиксировано {{ recent_failures }} сбоев в последних операциях (порог: {{ error_threshold }}).
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Карточки метрик -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card border-dark h-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Статус 1С OData</h6>
+                        {% if health_info.is_healthy %}
+                            <span class="badge bg-success fs-6">{{ health_info.status_text }}</span>
+                        {% else %}
+                            <span class="badge bg-danger fs-6">{{ health_info.status_text }}</span>
+                        {% endif %}
+                        <div class="small text-muted mt-2">Ping: {{ health_info.latency_ms }} ms</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-dark h-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Всего запросов</h6>
+                        <h3 class="mb-0">{{ total_count }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-dark h-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Успешно / Ошибок</h6>
+                        <h3 class="mb-0 text-success">{{ success_count }} <span class="text-danger">/ {{ failed_count }}</span></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-dark h-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Среднее время отклика</h6>
+                        <h3 class="mb-0">{{ avg_latency }} <small class="fs-6 text-muted">мс</small></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Таблица логов -->
+        <div class="card border-dark">
+            <div class="card-header bg-dark text-white fw-bold">
+                <i class="bi bi-journal-text me-2"></i>Последние транзакции обмена
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0 align-middle">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Время</th>
+                            <th>Система</th>
+                            <th>Операция</th>
+                            <th>HTTP Статус</th>
+                            <th>Latency</th>
+                            <th>Детали</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for log in logs %}
+                            <tr>
+                                <td>{{ log.timestamp|date:"Y-m-d H:i:s" }}</td>
+                                <td><span class="badge bg-secondary">{{ log.system_name }}</span></td>
+                                <td><code>{{ log.operation }}</code></td>
+                                <td>
+                                    {% if log.is_success %}
+                                        <span class="badge bg-success">{{ log.status_code }}</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">{{ log.status_code }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ log.response_time_ms }} ms</td>
+                                <td class="small text-muted">{{ log.error_message|truncatechars:60 }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Записи обмена отсутствуют</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

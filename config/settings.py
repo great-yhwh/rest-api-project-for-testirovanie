@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     'warehouse_sales',
+    'monitoring',
     "main",
     "users",
 ]
