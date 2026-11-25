@@ -32,7 +32,7 @@ class AstronomerProfile(models.Model):
     @property
     def activity_index(self):
         """
-        Индекс активности:
+        Индекс активности
         2 балла за каждое наблюдение и 1 балл за уникальную звезду.
         """
         return self.observations_count * 2 + self.unique_observed_stars_count
