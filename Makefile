@@ -29,6 +29,9 @@ ps: ## Статус
 exec: ## Войти в терминал запущенного  приложения
 	docker compose exec app sh
 
+test: ## запуск всех файлов с названием тест
+	docker compose exec app python manage.py test
+
 pull: ## Скачивание  образов
 	docker compose pull
 

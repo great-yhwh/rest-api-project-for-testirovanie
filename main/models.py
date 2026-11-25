@@ -124,7 +124,8 @@ class Planet(models.Model):
 
 class ObservationLog(models.Model):
     observer = models.ForeignKey(
-        User, on_delete=models.CASCADE, verbose_name="Наблюдатель"
+        User, on_delete=models.CASCADE,
+        related_name="observation_logs",verbose_name="Наблюдатель",
     )
     star = models.ForeignKey(
         Star, on_delete=models.CASCADE, verbose_name="Звезда"
