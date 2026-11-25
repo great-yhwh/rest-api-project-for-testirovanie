@@ -163,17 +163,13 @@ class ConstellationApiTests(TestCase):
         self.assertEqual(data["latin_name"], "Orion")
 
     def test_create_constellation(self):
-        data = {"name": "Андромеда","latin_name": "Andromeda"}
-
+        data = {"name": "ИВАШКО","latin_name": "IVASHKO"}
         response = self.client.post(reverse("constellation-list"),data,format="json",
         )
-
         self.assertEqual(response.status_code, 201)
-
         constellation = Constellation.objects.get(pk=response.data["id"])
-
-        self.assertEqual(constellation.name, "Андромеда")
-        self.assertEqual(constellation.latin_name, "Andromeda")
+        self.assertEqual(constellation.name, "ИВАШКО")
+        self.assertEqual(constellation.latin_name, "IVASHKO")
 
     def test_retrieve_constellation(self):
         response = self.client.get(
@@ -182,14 +178,13 @@ class ConstellationApiTests(TestCase):
                 kwargs={"pk": self.constellation.pk},
             ),
         )
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["name"], "Орион")
 
     def test_update_constellation(self):
         data = {
             "name": "Орион",
-            "latin_name": "Orion Updated",
+            "latin_name": "Orion XD",
         }
 
         response = self.client.put(
@@ -207,12 +202,12 @@ class ConstellationApiTests(TestCase):
 
         self.assertEqual(
             self.constellation.latin_name,
-            "Orion Updated",
+            "Orion XD",
         )
 
     def test_partial_update_constellation(self):
         data = {
-            "name": "Орион Updated",
+            "name": "Орион XD",
         }
 
         response = self.client.patch(
@@ -228,7 +223,7 @@ class ConstellationApiTests(TestCase):
 
         self.constellation.refresh_from_db()
 
-        self.assertEqual(self.constellation.name, "Орион Updated")
+        self.assertEqual(self.constellation.name, "Орион XD")
         self.assertEqual(self.constellation.latin_name, "Orion")
 
     def test_delete_constellation(self):
