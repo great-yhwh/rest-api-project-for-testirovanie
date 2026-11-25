@@ -6,8 +6,7 @@ from main.models import Constellation, Star, Planet
 class ConstellationTests(TestCase):
     def setUp(self):
         self.constellation = Constellation.objects.create(
-            name="Орион",
-            latin_name="Orion"
+            name="Орион", latin_name="Orion"
         )
 
     def test_stars_count(self):
@@ -111,7 +110,7 @@ class StarTests(TestCase):
         Planet.objects.create(
             name="Планета 3",
             star=self.star,
-            is_habitable=False,
+            is_habitable=False
         )
         Planet.objects.create(
             name="Планета 4", star=self.star,
@@ -126,29 +125,19 @@ class StarTests(TestCase):
 
 class PlanetTests(TestCase):
     def setUp(self):
-        constellation = Constellation.objects.create(name="Орион", latin_name="Orion",)
+        constellation = Constellation.objects.create(name="Орион", latin_name="Orion")
 
         self.star = Star.objects.create(
-            name="Звезда 1",
-            constellation=constellation,
-            spectral_class="M1",
-            distance_light_years=250.0,
+            name="Звезда 1", constellation=constellation,
+            spectral_class="ВОТ",  distance_light_years=250.0
         )
 
         self.planet = Planet.objects.create(
-            name="Планета 1",
-            star=self.star,
-            is_habitable=True,
+            name="Планета 1", star=self.star, is_habitable=True
         )
 
     def test_distance_light_years(self):
-        self.assertEqual(
-            self.planet.distance_light_years,
-            250.0,
-        )
+        self.assertEqual(self.planet.distance_light_years,250.0)
 
     def test_light_travel_time_years(self):
-        self.assertEqual(
-            self.planet.light_travel_time_years,
-            250.0,
-        )
+        self.assertEqual(self.planet.light_travel_time_years,250.0)
