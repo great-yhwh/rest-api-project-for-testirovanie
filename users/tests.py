@@ -52,4 +52,18 @@ class AstronomerProfileCalculationTests(TestCase):
 
         self.assertEqual(self.profile.unique_observed_stars_count, 2)
 
-# Create your tests here.
+    def test_activity_index(self):
+        ObservationLog.objects.create(
+            observer=self.user, star=self.star,
+            notes="Первое наблюдение",
+        )
+        ObservationLog.objects.create(
+            observer=self.user, star=self.star,
+            notes="Второе наблюдение",
+        )
+
+        # 2 наб. = 4; 1 уникальная звезда=1. Итог: 5.
+        self.assertEqual(self.profile.activity_index, 5)
+
+    def test_activity_index_without_observations(self):
+        self.assertEqual(self.profile.activity_index, 0)

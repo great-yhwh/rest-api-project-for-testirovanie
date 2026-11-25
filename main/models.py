@@ -13,6 +13,26 @@ class Constellation(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def stars_count(self):
+        """Количество звёзд в созвездии"""
+        return self.stars.count()
+
+    @property
+    def visible_stars_count(self):
+        """Количество звёзд,  невооружённым глазом"""
+        return self.stars.filter(is_visible_naked_eye=True).count()
+
+    @property
+    def visible_stars_percentage(self):
+        """Процент видимых невооружённым глазом звёзд"""
+        total = self.stars_count
+
+        if total == 0:
+            return 0.0
+
+        return round(self.visible_stars_count / total * 100, 2)
+
 
 class Star(models.Model):
     name = models.CharField(
@@ -37,6 +57,42 @@ class Star(models.Model):
     def __str__(self):
         return f"Звезда {self.name}"
 
+    @property
+    def distance_parsecs(self):
+        """Расстояние до звезды в парсеках."""
+        if self.distance_light_years is None: return 0.0
+
+        # 1 парсек = 3,26156 светового года.
+        return round(self.distance_light_years / 3.26156, 4)
+
+    @property
+    def light_travel_time_years(self):
+        """Примерное время, за которое свет достигнет Земли"""
+        if self.distance_light_years is None:
+            return 0.0
+
+        return round(self.distance_light_years, 2)
+
+    @property
+    def planets_count(self):
+        """Общее количество планет у звезды"""
+        return self.planets.count()
+
+    @property
+    def habitable_planets_count(self):
+        """Количество обитаемых планет у звезды"""
+        return self.planets.filter(is_habitable=True).count()
+
+    @property
+    def habitable_planets_percentage(self):
+        """Процент обитаемых планет среди всех планет звезды"""
+        total = self.planets_count
+
+        if total == 0:
+            return 0.0
+
+        return round(self.habitable_planets_count / total * 100, 2)
+
 
 class Planet(models.Model):
     name = models.CharField(
@@ -54,6 +110,16 @@ class Planet(models.Model):
 
     def __str__(self):
         return f"Планета {self.name} (звезда {self.star.name})"
+
+    @property
+    def distance_light_years(self):
+        """Расстояние планеты через расстояние до её звезды"""
+        return self.star.distance_light_years
+
+    @property
+    def light_travel_time_years(self):
+        """Примерное время распространения света до планеты"""
+        return self.star.light_travel_time_years
 
 
 class ObservationLog(models.Model):

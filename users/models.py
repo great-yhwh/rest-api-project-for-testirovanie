@@ -13,3 +13,26 @@ class AstronomerProfile(models.Model):
 
     def __str__(self):
         return f"Астроном {self.user.username}"
+
+    @property
+    def observations_count(self):
+        """Количество наблюдений пользователя"""
+        return self.user.observation_logs.count()
+
+    @property
+    def unique_observed_stars_count(self):
+        """Количество уникальных наблюдённых звёзд"""
+        return (
+            self.user.observation_logs
+            .values("star_id")
+            .distinct()
+            .count()
+        )
+
+    @property
+    def activity_index(self):
+        """
+        Индекс активности:
+        2 балла за каждое наблюдение и 1 балл за уникальную звезду.
+        """
+        return self.observations_count * 2 + self.unique_observed_stars_count
