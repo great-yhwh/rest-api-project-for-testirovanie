@@ -60,17 +60,12 @@ class Star(models.Model):
     @property
     def distance_parsecs(self):
         """Расстояние до звезды в парсеках."""
-        if self.distance_light_years is None: return 0.0
-
         # 1 парсек = 3,26156 светового года.
         return round(self.distance_light_years / 3.26156, 4)
 
     @property
     def light_travel_time_years(self):
         """Примерное время, за которое свет достигнет Земли"""
-        if self.distance_light_years is None:
-            return 0.0
-
         return round(self.distance_light_years, 2)
 
     @property
