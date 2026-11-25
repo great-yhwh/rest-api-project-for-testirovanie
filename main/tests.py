@@ -3,7 +3,7 @@ from django.test import TestCase
 from main.models import Constellation, Star, Planet
 
 
-class ConstellationCalculationTests(TestCase):
+class ConstellationTests(TestCase):
     def setUp(self):
         self.constellation = Constellation.objects.create(
             name="Орион",
@@ -59,7 +59,7 @@ class ConstellationCalculationTests(TestCase):
         self.assertEqual(self.constellation.visible_stars_percentage, 0.0)
 
 
-class StarCalculationTests(TestCase):
+class StarTests(TestCase):
     def setUp(self):
         self.constellation = Constellation.objects.create(name="Орион",latin_name="Orion")
 
@@ -124,7 +124,7 @@ class StarCalculationTests(TestCase):
         self.assertEqual(self.star.habitable_planets_percentage, 0.0)
 
 
-class PlanetCalculationTests(TestCase):
+class PlanetTests(TestCase):
     def setUp(self):
         constellation = Constellation.objects.create(name="Орион", latin_name="Orion",)
 

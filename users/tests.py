@@ -4,7 +4,7 @@ from main.models import Constellation, Star, ObservationLog
 from users.models import AstronomerProfile
 
 
-class AstronomerProfileCalculationTests(TestCase):
+class AstronomerProfileTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="astronom", password="password")
         self.profile = AstronomerProfile.objects.create(
